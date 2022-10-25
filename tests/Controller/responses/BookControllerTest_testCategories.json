@@ -1,0 +1,15 @@
+{
+  "items": [
+    {
+      "id": 11,
+      "title": "RXJAVA for Android Developer ",
+      "slug": "rxjava-for-android-developer",
+      "image": "https:\/\/images.manning.com\/360\/480\/resize\/book\/b\/bc57fb7-b239-4bf5-bbf2-886be8936951\/Tuominen-RxJava-HI.png",
+      "authors": [
+        "Tino Timberts"
+      ],
+      "meap": false,
+      "publicationDate": 1555718400
+    }
+  ]
+}
