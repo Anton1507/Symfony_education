@@ -9,15 +9,18 @@ use App\Model\BookListItem;
 use App\Model\BookListResponse;
 use App\Repository\BookCategoryRepository;
 use App\Repository\BookRepository;
+use App\Repository\ReviewRepository;
 use App\Service\BookService;
 use App\Tests\AbstractClassTest;
 use DateTime;
+use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 
 class BookServiceTest extends AbstractClassTest
 {
     public function testGetBooksByCategoryNotFound(): void
     {
+        $reviewRepository = $this->createMock(ReviewRepository::class);
         $bookRepository = $this->createMock(BookRepository::class);
         $bookCategoryRepository = $this->createMock(BookCategoryRepository::class);
         $bookCategoryRepository->expects($this->once())
@@ -30,6 +33,7 @@ class BookServiceTest extends AbstractClassTest
 
     public function testGetBooksByCategory(): void
     {
+        $reviewRepository = $this->createMock(ReviewRepository::class);
         $bookRepository = $this->createMock(BookRepository::class);
         $bookRepository->expects($this->once())
             ->method('findBookByCategoryId')
@@ -40,9 +44,9 @@ class BookServiceTest extends AbstractClassTest
             ->method('existsById')
             ->with(130)
             ->willReturn(true);
-        $servise = new BookService($bookRepository, $bookCategoryRepository);
+        $service = new BookService($bookRepository, $bookCategoryRepository);
         $expected = new BookListResponse([$this->createBookItemModal()]);
-        $this->assertEquals($expected, $servise->getBooksByCategory(130));
+        $this->assertEquals($expected, $service->getBooksByCategory(130));
     }
 
     private function createBookEntity()
@@ -52,9 +56,11 @@ class BookServiceTest extends AbstractClassTest
             ->setSlug('test-book')
             ->setImage('http://localhost/test.png')
             ->setMeap(false)
+            ->setIsbn('12345')
+            ->setDescription('test descriptions')
             ->setAuthors(['Tester'])
             ->setCategories(new ArrayCollection())
-            ->setPublicationDate(new DateTime('2022-10-10'));
+            ->setPublicationDate(new DateTimeImmutable('2022-10-10'));
         $this->setEntityId($book, 123);
 
         return $book;

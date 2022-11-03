@@ -2,6 +2,8 @@
 
 namespace App\Listener;
 
+use App\Model\ErrorDebugDetails;
+use App\Model\ErrorResponse;
 use App\Service\ExceptionHandler\ExceptionMapping;
 use App\Service\ExceptionHandler\ExceptionMappingResolver;
 use Psr\Log\LoggerInterface;
@@ -10,11 +12,10 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\SerializerInterface;
-use App\Model\ErrorResponse;
 
 class ApiExceptionListener
 {
-    public function __construct(private readonly ExceptionMappingResolver $resolver, private readonly LoggerInterface $logger, private readonly SerializerInterface $serializer)
+    public function __construct(private readonly ExceptionMappingResolver $resolver, private readonly LoggerInterface $logger, private readonly SerializerInterface $serializer, private bool $isDebug)
     {
     }
 
@@ -34,10 +35,8 @@ class ApiExceptionListener
         }
 
         $message = $mapping->isHidden() ? Response::$statusTexts[$mapping->getCode()] : $throwable->getMessage();
-        $data = $this->serializer->serialize(new ErrorResponse($message), JsonEncoder::FORMAT);
-        $response = new JsonResponse($data, $mapping->getCode(), [], true);
-        dump($response);
-
-        $event->setResponse($response);
+        $details = $this->isDebug ? new ErrorDebugDetails($throwable->getTraceAsString()) : null;
+        $data = $this->serializer->serialize(new ErrorResponse($message, $details), JsonEncoder::FORMAT);
+        $event->setResponse(new JsonResponse($data, $mapping->getCode(), [], true));
     }
 }

@@ -15,7 +15,6 @@ class BookCategoryControllerTest extends AbstractControllerTest
         $this->client->request('GET', '/api/v1/categories');
         $responseContent = $this->client->getResponse()->getContent();
 
-        $this->assertResponseIsSuccessful();
         $this->assertJsonDocumentMatchesSchema($responseContent, [
             'type' => 'object',
             'required' => ['items'],

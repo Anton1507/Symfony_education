@@ -22,26 +22,44 @@ class Book
     #[ORM\Column(type: 'string', length: 255)]
     private string $slug;
 
-    #[ORM\Column(type: 'string', length: 255)]
-    private string $image;
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $image;
 
-    #[ORM\Column(type: 'simple_array')]
-    private array $authors;
+    #[ORM\Column(type: 'simple_array', nullable: true)]
+    private ?array $authors;
 
-    #[ORM\Column(type: 'date')]
-    private DateTimeInterface $publicationDate;
+    #[ORM\Column(type: 'string', length: 13, nullable: true)]
+    private ?string $isbn;
+
+    #[ORM\Column(type: 'text', nullable: true)]
+    private ?string $description;
+
+    #[ORM\Column(type: 'date_immutable', nullable: true)]
+    private ?DateTimeInterface $publicationDate;
 
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private bool $meap;
 
     #[ORM\ManyToMany(targetEntity: BookCategory::class)]
+    #[ORM\JoinTable(name: 'book_to_book_category')]
     private Collection $categories;
+    /**
+     * @var Collection<BookToBookFormat>
+     */
+    #[ORM\OneToMany(mappedBy: 'book', targetEntity: BookToBookFormat::class)]
+    private Collection $formats;
+    /**
+     * @var Collection<Review>
+     */
+    #[ORM\OneToMany(mappedBy: 'book', targetEntity: Review::class)]
+    private Collection $reviews;
 
     public function __construct()
     {
         $this->categories = new ArrayCollection();
+        $this->formats = new ArrayCollection();
+        $this->reviews = new ArrayCollection();
     }
-
 
     public function getId(): ?int
     {
@@ -120,22 +138,62 @@ class Book
         return $this;
     }
 
-    /**
-     * @return Collection<BookCategory>
-     */
     public function getCategories(): Collection
     {
         return $this->categories;
     }
 
-    /**
-     * @param Collection<BookCategory> $categories
-     *
-     * @return $this
-     */
     public function setCategories(Collection $categories): self
     {
         $this->categories = $categories;
+
+        return $this;
+    }
+
+    public function getIsbn(): string
+    {
+        return $this->isbn;
+    }
+
+    public function setIsbn(string $isbn): Book
+    {
+        $this->isbn = $isbn;
+
+        return $this;
+    }
+
+    public function getDescription(): string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(string $description): Book
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    public function getFormats(): Collection
+    {
+        return $this->formats;
+    }
+
+    public function setFormats(Collection $formats): Book
+    {
+        $this->formats = $formats;
+
+        return $this;
+    }
+
+    public function getReviews(): Collection
+    {
+        return $this->reviews;
+    }
+
+    public function setReviews(Collection $reviews): Book
+    {
+        $this->reviews = $reviews;
 
         return $this;
     }

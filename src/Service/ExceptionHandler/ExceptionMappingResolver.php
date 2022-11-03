@@ -24,7 +24,6 @@ class ExceptionMappingResolver
     public function resolve(string $throwableClass): ?ExceptionMapping
     {
         $foundMapping = null;
-        var_dump($throwableClass);
         foreach ($this->mappings as $class => $mapping) {
             if ($throwableClass === $class || is_subclass_of($throwableClass, $class)) {
                 $foundMapping = $mapping;

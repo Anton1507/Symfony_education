@@ -5,6 +5,7 @@ namespace App\Tests\Controller;
 use App\Entity\Book;
 use App\Entity\BookCategory;
 use App\Tests\AbstractControllerTest;
+use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use DateTime;
 
@@ -49,9 +50,11 @@ class BookControllerTest extends AbstractControllerTest
             ->setTitle('Test Book')
             ->setImage('http://localhost/test.png')
             ->setSlug('test book')
+            ->setIsbn('12345')
+            ->setDescription('test')
             ->setAuthors(['Authors test'])
             ->setMeap(false)
-            ->setPublicationDate(new DateTime())
+            ->setPublicationDate(new DateTimeImmutable())
             ->setCategories(new ArrayCollection([$bookCategory])));
         $this->em->flush();
 

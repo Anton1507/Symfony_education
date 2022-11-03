@@ -2,6 +2,7 @@
 
 namespace App\DataFixtures;
 
+use DateTimeImmutable;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
@@ -18,8 +19,10 @@ class BookFixtures extends Fixture implements DependentFixtureInterface
 
         $book = (new Book())
             ->setTitle('RXJAVA for Android Developer ')
-            ->setPublicationDate(new DateTime('2019-04-20'))
+            ->setPublicationDate(new DateTimeImmutable('2019-04-20'))
             ->setMeap(false)
+            ->setIsbn('12345')
+            ->setDescription('test descriptions')
             ->setAuthors(['Tino Timberts'])
             ->setSlug('rxjava-for-android-developer')
             ->setCategories(new ArrayCollection([$androidCategory, $deviceCategory]))

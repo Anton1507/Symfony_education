@@ -6,6 +6,7 @@ use App\Entity\Book;
 use App\Entity\BookCategory;
 use App\Repository\BookRepository;
 use App\Tests\AbstractRepositoryTest;
+use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 
 class BookRepositoryTest extends AbstractRepositoryTest
@@ -35,10 +36,12 @@ class BookRepositoryTest extends AbstractRepositoryTest
     private function createBook(string $title, BookCategory $category): Book
     {
         return (new Book())
-            ->setPublicationDate(new \DateTime())
+            ->setPublicationDate(new DateTimeImmutable())
             ->setAuthors(['author'])
             ->setMeap(false)
             ->setSlug($title)
+            ->setIsbn('12345')
+            ->setDescription('test description')
             ->setCategories(new ArrayCollection([$category]))
             ->setTitle($title)
             ->setImage('http://localhost/'.$title.'.png');
