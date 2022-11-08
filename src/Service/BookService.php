@@ -14,13 +14,15 @@ use App\Model\BookListItem;
 use App\Model\BookListResponse;
 use App\Repository\BookCategoryRepository;
 use App\Repository\BookRepository;
-use App\Repository\ReviewRepository;
 use Doctrine\Common\Collections\Collection;
 
 class BookService
 {
-    public function __construct(private BookRepository $bookRepository, private BookCategoryRepository $bookCategoryRepository, private readonly ReviewRepository $reviewRepository, private RatingService $ratingService)
-    {
+    public function __construct(
+        private BookRepository $bookRepository,
+        private BookCategoryRepository $bookCategoryRepository,
+        private RatingService $ratingService
+    ) {
     }
 
     public function getBooksByCategory(int $categoryId): BookListResponse
@@ -38,8 +40,7 @@ class BookService
     public function getBookById(int $id): BookDetails
     {
         $book = $this->bookRepository->getById($id);
-        $reviews = $this->reviewRepository->countByBookId($id);
-        $rating = $this->ratingService->calcReviewRatingForBook($id, $reviews);
+        $rating = $this->ratingService->calcReviewRatingForBook($id);
 
         $categories = $book->getCategories()
             ->map(fn (BookCategory $bookCategory) => new BookCategoryModel(
@@ -47,8 +48,8 @@ class BookService
             ));
 
         return BookMapper::map($book, new BookDetails())
-            ->setRating($rating)
-            ->setReviews($reviews)
+            ->setRating($rating->getRating())
+            ->setReviews($rating->getTotal())
             ->setFormats($this->mapFormats($book->getFormats()))
            ->setCategories($categories->toArray());
     }

@@ -18,6 +18,7 @@ class BookMapper
             ->setImage($book->getImage())
             ->setMeap($book->getMeap())
             ->setPublicationDate($book->getPublicationDate()->getTimestamp());
-
     }
+
+
 }

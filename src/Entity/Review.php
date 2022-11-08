@@ -90,4 +90,16 @@ class Review
 
         return $this;
     }
+
+    public function getBook(): Book
+    {
+        return $this->book;
+    }
+
+    public function setBook(Book $book): Review
+    {
+        $this->book = $book;
+
+        return $this;
+    }
 }
