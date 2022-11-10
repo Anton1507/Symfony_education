@@ -1,6 +1,14 @@
+api_login_check:
+    path:  /api/v1/auth/login
+
+api_refresh_token:
+    path: /api/v1/auth/refresh
+
 controllers:
     resource: ../src/Controller/
     type: attribute
+
+
 # app_main:
 #     path: /
 #     controller: App\Controller\MainController::number
