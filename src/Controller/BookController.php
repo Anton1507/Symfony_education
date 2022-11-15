@@ -22,7 +22,7 @@ class BookController extends AbstractController
      * @OA\Response
      * (
      *     response=200,
-     *     description="Return book for category id",
+     *     description="Return published books for category id",
      *      @Model(type=BookListResponse::class)
      * )
      * @OA\Response
@@ -42,7 +42,7 @@ class BookController extends AbstractController
      * @OA\Response
      * (
      *     response=200,
-     *     description="Return book detail information",
+     *     description="Return published book detail information",
      *      @Model(type=BookDetails::class)
      * )
      * @OA\Response

@@ -23,11 +23,12 @@ class SignUpService
 
     public function singUp(SignUpRequest $signUpRequest): JWTAuthenticationSuccessResponse|Response
     {
-        if ($this->userRepository->existsByEntity($signUpRequest->getEmail())) {
+        if ($this->userRepository->existsByEmail($signUpRequest->getEmail())) {
             throw new UserAlreadyExistException();
         }
 
         $user = (new User())
+            ->setRoles(['ROLE_USER'])
             ->setFirstName($signUpRequest->getFirstName())
             ->setLastName($signUpRequest->getLastName())
             ->setEmail($signUpRequest->getEmail());

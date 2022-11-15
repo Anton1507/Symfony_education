@@ -30,7 +30,7 @@ class BookRepositoryTest extends AbstractRepositoryTest
         }
         $this->em->flush();
 
-        $this->assertCount(5, $this->bookRepository->findBookByCategoryId($devicesCategory->getId()));
+        $this->assertCount(5, $this->bookRepository->findPublishedBooksByCategoryId($devicesCategory->getId()));
     }
 
     private function createBook(string $title, BookCategory $category): Book

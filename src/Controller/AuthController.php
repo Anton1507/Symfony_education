@@ -24,7 +24,10 @@ class AuthController extends AbstractController
      * @QA\Response(
      *     response=200,
      *     description="Signs up a user",
-     * @Model(type=IdResponse::class)
+     *     @QA\JsonContent(
+     *           @QA\Property(property="token", type="string" ),
+     *           @QA\Property(property="refresh_token", type="string" )
+     *      )
      * )
      * @QA\Response(
      *     response=409,
@@ -32,14 +35,14 @@ class AuthController extends AbstractController
      * @Model(type=ErrorResponse::class)
      * )
      * @QA\Response(
-     *     response=409,
+     *     response=400,
      *     description="Validation failed",
      * @Model(type=ErrorResponse::class)
      * )
      * @QA\RequestBody(@Model(type=SignUpRequest::class))
      */
     #[Route(path: '/api/v1/auth/signUp', methods: ['POST'])]
-    public function action(#[RequestBody] SignUpRequest $signUpRequest): JWTAuthenticationSuccessResponse|Response
+    public function signUp(#[RequestBody] SignUpRequest $signUpRequest): JWTAuthenticationSuccessResponse|Response
     {
         return $this->signUpService->singUp($signUpRequest);
     }
