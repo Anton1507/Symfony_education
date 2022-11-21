@@ -83,11 +83,12 @@ class BookRepository extends ServiceEntityRepository
         if (null == $book) {
             throw new BookAlreadyExistException();
         }
+
         return $book;
     }
 
     public function existBySlug(string $slug): bool
     {
-        return null !== $this->findOneBy(['slug'=>$slug]);
+        return null !== $this->findOneBy(['slug' => $slug]);
     }
 }
